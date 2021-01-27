@@ -21,7 +21,7 @@ import com.example.hw3.models.StudentAdapter
  */
 class ListFragment : Fragment(R.layout.fragment_list) {
 
-    private val students = mutableSetOf<Student>()
+    private val students = ArrayList<Student>()
     private var idCounter: Int = 1
 
     private lateinit var rv: RecyclerView
@@ -35,13 +35,13 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         rv = view.findViewById(R.id.rv_students)
         adapter = StudentAdapter()
         rv.adapter = adapter
-        adapter.sumbitlist(students.toList())
+        adapter.sumbitlist(students)
 
         val srl = view.findViewById<SwipeRefreshLayout>(R.id.RefreshFragment)
 
         srl?.setOnRefreshListener {
             srl.isRefreshing = false
-            adapter.sumbitlist(students.toList())
+            adapter.sumbitlist(students)
         }
         btnAdd?.setOnClickListener() {
             if (editText?.text.isNullOrEmpty()) {
@@ -54,7 +54,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
                 }
             }
             students.add(newStudent)
-
+            adapter.notifyDataSetChanged()
             ++idCounter
         }
 
